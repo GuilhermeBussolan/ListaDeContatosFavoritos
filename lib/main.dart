@@ -42,49 +42,56 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: contatos.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://uploads.oparana.com.br/2025/01/BJiaxSsg-Imagem-do-WhatsApp-de-2025-01-31-as-12.23.18_4103b59e.webp',
+              child: ReorderableListView(
+                onReorder: (oldIndex, newIndex) {
+                  setState(() {
+                    if (newIndex > oldIndex) newIndex--;
+                    final item = contatos.removeAt(oldIndex);
+                    contatos.insert(newIndex, item);
+                  });
+                },
+                children: [
+                  for (int index = 0; index < contatos.length; index++)
+                    ListTile(
+                      key: ValueKey(contatos[index].email),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          'https://uploads.oparana.com.br/2025/01/BJiaxSsg-Imagem-do-WhatsApp-de-2025-01-31-as-12.23.18_4103b59e.webp',
+                        ),
+                      ),
+                      title: Text(contatos[index].nomeCompleto),
+                      subtitle: Text(contatos[index].email),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              contatos[index].favorito
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: contatos[index].favorito
+                                  ? Colors.red
+                                  : Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                contatos[index].favorito =
+                                    !contatos[index].favorito;
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              setState(() {
+                                contatos.removeAt(index);
+                              });
+                            },
+                          ),
+                        ],
                       ),
                     ),
-                    title: Text(contatos[index].nomeCompleto),
-                    subtitle: Text(contatos[index].email),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            contatos[index].favorito
-                                ? Icons.favorite
-                                : Icons.favorite_border,
-                            color:
-                                contatos[index].favorito
-                                    ? Colors.red
-                                    : Colors.grey,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              contatos[index].favorito =
-                                  !contatos[index].favorito;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            setState(() {
-                              contatos.removeAt(index);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                ],
               ),
             ),
           ],
