@@ -4,7 +4,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// mudei o MyApp em StatefulWidget para controlar o estado da lista
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -23,7 +22,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     const title = 'Lista de Contato';
-
     int totalFavoritos = contatos.where((c) => c.favorito).length;
 
     return MaterialApp(
@@ -31,7 +29,6 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(title: const Text(title)),
-
         body: Column(
           children: [
             Padding(
@@ -44,7 +41,6 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
-
             Expanded(
               child: ListView.builder(
                 itemCount: contatos.length,
@@ -59,20 +55,34 @@ class _MyAppState extends State<MyApp> {
                     ),
                     title: Text(contatos[index].nomeCompleto),
                     subtitle: Text(contatos[index].email),
-                    trailing: IconButton(
-                      icon: Icon(
-                        contatos[index].favorito
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color:
-                            contatos[index].favorito ? Colors.red : Colors.grey,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          contatos[index].favorito =
-                              !contatos[index].favorito;
-                        });
-                      },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            contatos[index].favorito
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: contatos[index].favorito
+                                ? Colors.red
+                                : Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              contatos[index].favorito =
+                                  !contatos[index].favorito;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            setState(() {
+                              contatos.removeAt(index);
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   );
                 },
