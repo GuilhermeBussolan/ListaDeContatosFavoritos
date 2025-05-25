@@ -47,10 +47,8 @@ class _MyAppState extends State<MyApp> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Text(
-                        contatos[index].nomeCompleto[0],
-                        style: const TextStyle(color: Colors.white),
+                      backgroundImage: NetworkImage(
+                        'https://uploads.oparana.com.br/2025/01/BJiaxSsg-Imagem-do-WhatsApp-de-2025-01-31-as-12.23.18_4103b59e.webp',
                       ),
                     ),
                     title: Text(contatos[index].nomeCompleto),
@@ -63,9 +61,10 @@ class _MyAppState extends State<MyApp> {
                             contatos[index].favorito
                                 ? Icons.favorite
                                 : Icons.favorite_border,
-                            color: contatos[index].favorito
-                                ? Colors.red
-                                : Colors.grey,
+                            color:
+                                contatos[index].favorito
+                                    ? Colors.red
+                                    : Colors.grey,
                           ),
                           onPressed: () {
                             setState(() {
